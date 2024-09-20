@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 public class MortgageCalculationServiceImpl implements MortgageCalculationService {
+
     private final RateCalculationService rateCalculationService;
 
     private final PrintingService printingService;
