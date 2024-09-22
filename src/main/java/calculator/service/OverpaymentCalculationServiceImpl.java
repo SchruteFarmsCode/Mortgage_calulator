@@ -2,11 +2,12 @@ package calculator.service;
 
 import calculator.model.InputData;
 import calculator.model.Overpayment;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Optional;
-
+@Service
 public class OverpaymentCalculationServiceImpl implements   OverpaymentCalculationService{
 
     @Override

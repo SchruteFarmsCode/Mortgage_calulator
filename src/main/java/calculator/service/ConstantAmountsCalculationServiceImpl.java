@@ -13,7 +13,7 @@ import java.math.RoundingMode;
 public class ConstantAmountsCalculationServiceImpl implements ConstantAmountsCalculationService {
 
     @Override
-    public RateAmounts calculate(InputData inputData, Overpayment overpayment) {
+    public RateAmounts calculate(final InputData inputData, final Overpayment overpayment) {
         BigDecimal interestPercent = inputData.interestPercent();
         BigDecimal q = AmountsCalculationService.calculateQ(interestPercent);
 
@@ -27,7 +27,7 @@ public class ConstantAmountsCalculationServiceImpl implements ConstantAmountsCal
     }
 
     @Override
-    public RateAmounts calculate(InputData inputData, Overpayment overpayment, Rate previousRate) {
+    public RateAmounts calculate(final InputData inputData, final Overpayment overpayment, final Rate previousRate) {
         BigDecimal interestPercent = inputData.interestPercent();
         BigDecimal q = AmountsCalculationService.calculateQ(interestPercent);
 
