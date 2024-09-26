@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 @Slf4j
 @Service
 public class TimePointCalculationServiceImpl implements TimePointCalculationService{
@@ -27,7 +26,7 @@ public class TimePointCalculationServiceImpl implements TimePointCalculationServ
     public TimePoint calculate(BigDecimal rateNumber, Rate previousRate) {
         BigDecimal year = calculateYear(rateNumber);
         BigDecimal month = calculateMonth(rateNumber);
-        LocalDate date = previousRate.timePoint().date().plus(1, ChronoUnit.MONTHS);
+        LocalDate date = previousRate.timePoint().date().plusMonths(1);
 
         TimePoint timePoint = new TimePoint(year, month, date);
         log.info("Calculated TimePoint from previous rate: {}", timePoint);
