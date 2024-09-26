@@ -43,7 +43,7 @@ public class ResidualCalculationServiceImpl implements ResidualCalculationServic
             BigDecimal previousResidualDuration,
             RateAmounts rateAmounts
     ) {
-        if (rateAmounts.overpayment().amount().compareTo(BigDecimal.ZERO) > 0) {
+        if (rateAmounts.overpaymentDetails().getAmount().compareTo(BigDecimal.ZERO) > 0) {
             return switch (inputData.rateType()) {
                 case CONSTANT -> calculateConstantResidualDuration(inputData, residualAmount, rateAmounts);
                 case DECREASING -> calculateDecreasingResidualDuration(residualAmount, rateAmounts);
@@ -76,7 +76,7 @@ public class ResidualCalculationServiceImpl implements ResidualCalculationServic
     private BigDecimal calculateResidualAmount(final BigDecimal residualAmount, final RateAmounts rateAmounts) {
         return residualAmount
                 .subtract(rateAmounts.capitalAmount())
-                .subtract(rateAmounts.overpayment().amount())
+                .subtract(rateAmounts.overpaymentDetails().getAmount())
                 .max(BigDecimal.ZERO);
     }
 }

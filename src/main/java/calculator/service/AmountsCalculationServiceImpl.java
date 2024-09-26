@@ -1,7 +1,7 @@
 package calculator.service;
 
 import calculator.model.InputData;
-import calculator.model.Overpayment;
+import calculator.model.OverpaymentDetails;
 import calculator.model.Rate;
 import calculator.model.RateAmounts;
 import lombok.AllArgsConstructor;
@@ -15,19 +15,19 @@ public class AmountsCalculationServiceImpl implements AmountsCalculationService 
 
     private final DecreasingAmountsCalculationService decreasingAmountsCalculationService;
 
-    @Override
-    public RateAmounts calculate(final InputData inputData, final Overpayment overpayment) {
+
+    public RateAmounts calculate(final InputData inputData, final OverpaymentDetails overpaymentDetails) {
         return switch (inputData.rateType()) {
-            case CONSTANT -> constantAmountsCalculationService.calculate(inputData, overpayment);
-            case DECREASING -> decreasingAmountsCalculationService.calculate(inputData, overpayment);
+            case CONSTANT -> constantAmountsCalculationService.calculate(inputData, overpaymentDetails);
+            case DECREASING -> decreasingAmountsCalculationService.calculate(inputData, overpaymentDetails);
         };
     }
 
-    @Override
-    public RateAmounts calculate(final InputData inputData, final Overpayment overpayment, final Rate previousRate) {
+
+    public RateAmounts calculate(final InputData inputData, final OverpaymentDetails overpaymentDetails, final Rate previousRate) {
         return switch (inputData.rateType()) {
-            case CONSTANT -> constantAmountsCalculationService.calculate(inputData, overpayment, previousRate);
-            case DECREASING -> decreasingAmountsCalculationService.calculate(inputData, overpayment, previousRate);
+            case CONSTANT -> constantAmountsCalculationService.calculate(inputData, overpaymentDetails, previousRate);
+            case DECREASING -> decreasingAmountsCalculationService.calculate(inputData, overpaymentDetails, previousRate);
         };
     }
 

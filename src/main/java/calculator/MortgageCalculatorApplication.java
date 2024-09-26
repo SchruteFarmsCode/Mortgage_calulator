@@ -1,20 +1,21 @@
 package calculator;
 
-import calculator.config.CalculatorConfiguration;
 import calculator.model.MortgageType;
 import calculator.model.Overpayment;
 import calculator.service.InputDataRepository;
 import calculator.service.MortgageCalculationService;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.TreeMap;
 
+@SpringBootApplication
 public class MortgageCalculatorApplication {
     public static void main(String[] args) {
-        ApplicationContext context = new AnnotationConfigApplicationContext(CalculatorConfiguration.class);
+        ApplicationContext context = SpringApplication.run(MortgageCalculatorApplication.class, args);
 
         InputDataRepository inputDataRepository = context.getBean(InputDataRepository.class);
         final var inputData = inputDataRepository.read();

@@ -1,5 +1,7 @@
 package calculator.model;
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.With;
 
@@ -9,25 +11,22 @@ import java.time.LocalDate;
 import java.util.Map;
 
 @With
+@Builder
 public record InputData(
-        LocalDate repaymentStartDate,
-        BigDecimal wiborPercent,
-        BigDecimal amount,
-        BigDecimal monthsDuration,
-        MortgageType rateType,
-        BigDecimal marginPercent,
-        BigDecimal overpaymentProvisionPercent,
-        BigDecimal overpaymentProvisionMonths,
-        BigDecimal overpaymentStartMonth,
-        Map<Integer, BigDecimal> overpaymentSchema,
-        String overpaymentReduceWay,
+        @NotNull LocalDate repaymentStartDate,
+        @DecimalMin(value = "0", message = "Wibor percent must be non-negative") BigDecimal wiborPercent,
+        @DecimalMin(value = "0", message = "Amount must be non-negative") BigDecimal amount,
+        @DecimalMin(value = "1", message = "Months duration must be at least 1") BigDecimal monthsDuration,
+        @NotNull MortgageType rateType,
+        @DecimalMin(value = "0", message = "Margin percent must be non-negative") BigDecimal marginPercent,
+        @DecimalMin(value = "0", message = "Overpayment provision percent must be non-negative") BigDecimal overpaymentProvisionPercent,
+        @DecimalMin(value = "0", message = "Overpayment provision months must be non-negative") BigDecimal overpaymentProvisionMonths,
+        @DecimalMin(value = "1", message = "Overpayment start month must be at least 1") BigDecimal overpaymentStartMonth,
+        @NotNull Map<Integer, BigDecimal> overpaymentSchema,
+        @NotNull Overpayment overpaymentReduceWay,
         boolean mortgagePrintPayoffsSchedule,
-        Integer mortgageRateNumberToPrint
+        BigDecimal mortgageRateNumberToPrint
 ) {
-    @Builder
-    public InputData {
-    }
-
     private static final BigDecimal PERCENT = new BigDecimal("100");
 
     public BigDecimal wiborPercent() {
@@ -50,4 +49,5 @@ public record InputData(
         return wiborPercent().add(marginPercent());
     }
 }
+
 

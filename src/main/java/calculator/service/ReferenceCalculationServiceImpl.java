@@ -24,15 +24,15 @@ public class ReferenceCalculationServiceImpl implements ReferenceCalculationServ
         }
 
         return switch (inputData.overpaymentReduceWay()) {
-            case Overpayment.REDUCE_RATE -> reduceRateMortgageReference(rateAmounts, previousRate.mortgageResidual());
-            case Overpayment.REDUCE_PERIOD -> new MortgageReference(inputData.amount(), inputData.monthsDuration());
+            case REDUCE_RATE -> reduceRateMortgageReference(rateAmounts, previousRate.mortgageResidual());
+            case REDUCE_PERIOD -> new MortgageReference(inputData.amount(), inputData.monthsDuration());
             default -> throw new MortgageException("Case not handled");
         };
 
     }
 
     private MortgageReference reduceRateMortgageReference(final RateAmounts rateAmounts, final MortgageResidual previousResidual) {
-        if (rateAmounts.overpayment().amount().compareTo(BigDecimal.ZERO) > 0) {
+        if (rateAmounts.overpaymentDetails().getAmount().compareTo(BigDecimal.ZERO) > 0) {
             BigDecimal residualAmount = calculateResidualAmount(previousResidual.residualAmount(), rateAmounts);
             return new MortgageReference(residualAmount, previousResidual.residualDuration().subtract(BigDecimal.ONE));
         }
@@ -43,7 +43,7 @@ public class ReferenceCalculationServiceImpl implements ReferenceCalculationServ
     private BigDecimal calculateResidualAmount(final BigDecimal residualAmount, final RateAmounts rateAmounts) {
         return residualAmount
                 .subtract(rateAmounts.capitalAmount())
-                .subtract(rateAmounts.overpayment().amount())
+                .subtract(rateAmounts.overpaymentDetails().getAmount())
                 .max(BigDecimal.ZERO);
     }
 }

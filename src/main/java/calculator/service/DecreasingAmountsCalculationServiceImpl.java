@@ -1,7 +1,7 @@
 package calculator.service;
 
 import calculator.model.InputData;
-import calculator.model.Overpayment;
+import calculator.model.OverpaymentDetails;
 import calculator.model.Rate;
 import calculator.model.RateAmounts;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.math.RoundingMode;
 @Service
 public class DecreasingAmountsCalculationServiceImpl implements DecreasingAmountsCalculationService {
     @Override
-    public RateAmounts calculate(final InputData inputData, final Overpayment overpayment) {
+    public RateAmounts calculate(final InputData inputData, final OverpaymentDetails overpaymentDetails) {
         BigDecimal interestPercent = inputData.interestPercent();
 
         final BigDecimal residualAmount = inputData.amount();
@@ -23,11 +23,11 @@ public class DecreasingAmountsCalculationServiceImpl implements DecreasingAmount
                 calculateDecreasingCapitalAmount(residualAmount, residualDuration), residualAmount);
         BigDecimal rateAmount = capitalAmount.add(interestAmount);
 
-        return new RateAmounts(rateAmount, interestAmount, capitalAmount, overpayment);
+        return new RateAmounts(rateAmount, interestAmount, capitalAmount, overpaymentDetails);
     }
 
     @Override
-    public RateAmounts calculate(final InputData inputData, final Overpayment overpayment, final Rate previousRate) {
+    public RateAmounts calculate(final InputData inputData, final OverpaymentDetails overpaymentDetails, final Rate previousRate) {
         BigDecimal interestPercent = inputData.interestPercent();
 
         BigDecimal residualAmount = previousRate.mortgageResidual().residualAmount();
@@ -39,7 +39,7 @@ public class DecreasingAmountsCalculationServiceImpl implements DecreasingAmount
                 calculateDecreasingCapitalAmount(referenceAmount, referenceDuration), residualAmount);
         BigDecimal rateAmount = capitalAmount.add(interestAmount);
 
-        return new RateAmounts(rateAmount, interestAmount, capitalAmount, overpayment);
+        return new RateAmounts(rateAmount, interestAmount, capitalAmount, overpaymentDetails);
     }
 
     private BigDecimal calculateDecreasingCapitalAmount(final BigDecimal residualAmount, final BigDecimal residualDuration) {

@@ -1,7 +1,7 @@
 package calculator.service;
 
 import calculator.model.InputData;
-import calculator.model.Overpayment;
+import calculator.model.OverpaymentDetails;
 import calculator.model.Rate;
 import calculator.model.RateAmounts;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.math.RoundingMode;
 public class ConstantAmountsCalculationServiceImpl implements ConstantAmountsCalculationService {
 
     @Override
-    public RateAmounts calculate(final InputData inputData, final Overpayment overpayment) {
+    public RateAmounts calculate(final InputData inputData, final OverpaymentDetails overpaymentDetails) {
         BigDecimal interestPercent = inputData.interestPercent();
         BigDecimal q = AmountsCalculationService.calculateQ(interestPercent);
 
@@ -23,11 +23,11 @@ public class ConstantAmountsCalculationServiceImpl implements ConstantAmountsCal
         BigDecimal rateAmount = calculateConstantRateAmount(q, interestAmount, residualAmount, inputData.amount(), inputData.monthsDuration());
         BigDecimal capitalAmount = AmountsCalculationService.compareCapitalWithResidual(rateAmount.subtract(interestAmount), residualAmount);
 
-        return new RateAmounts(rateAmount, interestAmount, capitalAmount, overpayment);
+        return new RateAmounts(rateAmount, interestAmount, capitalAmount, overpaymentDetails);
     }
 
     @Override
-    public RateAmounts calculate(final InputData inputData, final Overpayment overpayment, final Rate previousRate) {
+    public RateAmounts calculate(final InputData inputData, final OverpaymentDetails overpaymentDetails, final Rate previousRate) {
         BigDecimal interestPercent = inputData.interestPercent();
         BigDecimal q = AmountsCalculationService.calculateQ(interestPercent);
 
@@ -39,7 +39,7 @@ public class ConstantAmountsCalculationServiceImpl implements ConstantAmountsCal
         BigDecimal rateAmount = calculateConstantRateAmount(q, interestAmount, residualAmount, referenceAmount, referenceDuration);
         BigDecimal capitalAmount = AmountsCalculationService.compareCapitalWithResidual(rateAmount.subtract(interestAmount), residualAmount);
 
-        return new RateAmounts(rateAmount, interestAmount, capitalAmount, overpayment);
+        return new RateAmounts(rateAmount, interestAmount, capitalAmount, overpaymentDetails);
     }
 
     private BigDecimal calculateConstantRateAmount(

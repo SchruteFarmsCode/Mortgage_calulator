@@ -2,6 +2,7 @@ package calculator.service;
 
 import calculator.model.InputData;
 import calculator.model.MortgageType;
+import calculator.model.Overpayment;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
@@ -43,9 +44,11 @@ public class InputDataRepository {
                 .overpaymentProvisionMonths(Optional.ofNullable(inputData.get("overpaymentProvisionMonths")).map(BigDecimal::new).orElseThrow())
                 .overpaymentStartMonth(Optional.ofNullable(inputData.get("overpaymentStartMonth")).map(BigDecimal::new).orElseThrow())
                 .overpaymentSchema(Optional.ofNullable(inputData.get("overpaymentSchema")).map(this::calculateSchema).orElseThrow())
-                .overpaymentReduceWay(Optional.ofNullable(inputData.get("overpaymentReduceWay")).orElseThrow())
+                .overpaymentReduceWay(Optional.ofNullable(inputData.get("overpaymentReduceWay"))
+                        .map(Overpayment::valueOf)
+                        .orElseThrow())
                 .mortgagePrintPayoffsSchedule(Optional.ofNullable(inputData.get("mortgagePrintPayoffsSchedule")).map(Boolean::parseBoolean).orElseThrow())
-                .mortgageRateNumberToPrint(Optional.ofNullable(inputData.get("mortgageRateNumberToPrint")).map(Integer::parseInt).orElseThrow())
+                .mortgageRateNumberToPrint(Optional.ofNullable(inputData.get("mortgageRateNumberToPrint")).map(BigDecimal::new).orElseThrow())
                 .build());
     }
 

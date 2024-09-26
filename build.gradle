@@ -11,6 +11,10 @@ ext{
     lombokVersion = '1.18.24'
     logbackVersion = '1.5.6'
     junitVersion = '5.10.3'
+    springBoot = '3.3.3'
+    hibernate = '8.0.1.Final'
+    jakarta = '3.0.2'
+    glassfish = '4.0.2'
 }
 
 repositories {
@@ -23,6 +27,12 @@ dependencies {
     implementation "org.springframework:spring-context:$springVersion"
     implementation "org.springframework:spring-context-support:$springVersion"
     implementation "org.springframework:spring-expression:$springVersion"
+    implementation "org.springframework.boot:spring-boot-starter-web:$springBoot"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf:$springBoot"
+    implementation "jakarta.validation:jakarta.validation-api:$jakarta"
+    implementation "org.hibernate.validator:hibernate-validator:$hibernate"
+    implementation "org.glassfish:jakarta.el:$glassfish"
+
 
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"

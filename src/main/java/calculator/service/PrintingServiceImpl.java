@@ -21,10 +21,9 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class PrintingServiceImpl implements PrintingService{
+public class PrintingServiceImpl implements PrintingService {
 
     private static final String SEPARATOR = createSeparator('-', 180);
-
     private static final Path RESULT_FILE_PATH = Paths.get(".result");
 
     @SuppressWarnings("SameParameterValue")
@@ -42,7 +41,7 @@ public class PrintingServiceImpl implements PrintingService{
                         inputData.overpaymentStartMonth()
                 );
 
-        if (Optional.ofNullable(inputData.overpaymentSchema()).map(schema -> schema.size() > 0).orElse(false)) {
+        if (Optional.ofNullable(inputData.overpaymentSchema()).map(schema -> !schema.isEmpty()).orElse(false)) {
             String overpaymentMessage = OVERPAYMENT_INFORMATION.formatted(
                     Overpayment.REDUCE_PERIOD.equals(inputData.overpaymentReduceWay())
                             ? OVERPAYMENT_REDUCE_PERIOD
@@ -71,7 +70,7 @@ public class PrintingServiceImpl implements PrintingService{
         }
 
         rates.stream()
-                .filter(rate -> rate.rateNumber().remainder(BigDecimal.valueOf(inputData.mortgageRateNumberToPrint())).equals(BigDecimal.ZERO))
+                .filter(rate -> rate.rateNumber().remainder(inputData.mortgageRateNumberToPrint()).equals(BigDecimal.ZERO))
                 .forEach(rate -> {
                     log(formatRateLine(rate));
                     if (AmountsCalculationService.YEAR.equals(rate.timePoint().month())) {
@@ -91,7 +90,7 @@ public class PrintingServiceImpl implements PrintingService{
                 RATE_LINE_KEYS.get(4), rate.rateAmounts().rateAmount(),
                 RATE_LINE_KEYS.get(5), rate.rateAmounts().interestAmount(),
                 RATE_LINE_KEYS.get(6), rate.rateAmounts().capitalAmount(),
-                RATE_LINE_KEYS.get(7), rate.rateAmounts().overpayment().amount(),
+                RATE_LINE_KEYS.get(7), rate.rateAmounts().overpaymentDetails().getAmount(),
                 RATE_LINE_KEYS.get(8), rate.mortgageResidual().residualAmount(),
                 RATE_LINE_KEYS.get(9), rate.mortgageResidual().residualDuration()
         );
@@ -118,3 +117,4 @@ public class PrintingServiceImpl implements PrintingService{
         }
     }
 }
+

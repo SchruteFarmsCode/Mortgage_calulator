@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Wyniki kalkulacji</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<h1>Wyniki kalkulacji kredytu hipotecznego</h1>
+<p>Kwota kredytu: <span th:text="${inputData.amount}"></span></p>
+<p>Okres kredytowania: <span th:text="${inputData.monthsDuration}"></span> miesięcy</p>
+
+<table>
+    <thead>
+    <tr>
+        <th>Numer raty</th>
+        <th>Rok</th>
+        <th>Miesiąc</th>
+        <th>Data</th>
+        <th>Rata</th>
+        <th>Odsetki</th>
+        <th>Kapitał</th>
+        <th>Nadpłata</th>
+        <th>PKWT</th>
+        <th>PMSC</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="rate : ${rates}">
+        <td th:text="${rate.rateNumber}"></td>
+        <td th:text="${rate.timePoint.year}"></td>
+        <td th:text="${rate.timePoint.month}"></td>
+        <td th:text="${rate.timePoint.date}"></td>
+        <td th:text="${rate.rateAmounts.rateAmount}"></td>
+        <td th:text="${rate.rateAmounts.interestAmount}"></td>
+        <td th:text="${rate.rateAmounts.capitalAmount}"></td>
+        <td th:text="${rate.rateAmounts.overpaymentDetails.amount}"></td> <!-- Zmieniono na overpaymentDetails -->
+        <td th:text="${rate.mortgageResidual.residualAmount}"></td>
+        <td th:text="${rate.mortgageResidual.residualDuration}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/mortgage">Powrót do formularza</a>
+</body>
+</html>
+

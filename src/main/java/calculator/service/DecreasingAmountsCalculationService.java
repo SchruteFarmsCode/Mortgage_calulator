@@ -1,12 +1,12 @@
 package calculator.service;
 
 import calculator.model.InputData;
-import calculator.model.Overpayment;
+import calculator.model.OverpaymentDetails;
 import calculator.model.Rate;
 import calculator.model.RateAmounts;
 
 public interface DecreasingAmountsCalculationService {
-    RateAmounts calculate(InputData inputData, Overpayment overpayment);
+    RateAmounts calculate(InputData inputData, OverpaymentDetails overpaymentDetails);
 
-    RateAmounts calculate(InputData inputData, Overpayment overpayment, Rate previousRate);
+    RateAmounts calculate(InputData inputData, OverpaymentDetails overpaymentDetails, Rate previousRate);
 }

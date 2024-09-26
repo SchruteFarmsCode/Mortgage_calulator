@@ -1,7 +1,7 @@
 package calculator.service;
 
 import calculator.model.InputData;
-import calculator.model.Overpayment;
+import calculator.model.OverpaymentDetails;
 import calculator.model.Rate;
 import calculator.model.RateAmounts;
 
@@ -11,9 +11,9 @@ import java.math.RoundingMode;
 public interface AmountsCalculationService {
     BigDecimal YEAR = BigDecimal.valueOf(12);
 
-    RateAmounts calculate(final InputData inputData, final Overpayment overpayment);
+    RateAmounts calculate(final InputData inputData, final OverpaymentDetails overpaymentDetails);
 
-    RateAmounts calculate(final InputData inputData, final Overpayment overpayment, final Rate previousRate);
+    RateAmounts calculate(final InputData inputData, final OverpaymentDetails overpaymentDetails, final Rate previousRate);
 
 
     static BigDecimal calculateInterestAmount(final BigDecimal residualAmount, final BigDecimal interestPercentValue) {

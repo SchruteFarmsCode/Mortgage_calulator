@@ -2,19 +2,21 @@ package calculator.service;
 
 import calculator.model.InputData;
 import calculator.model.Overpayment;
+import calculator.model.OverpaymentDetails;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Optional;
 @Service
-public class OverpaymentCalculationServiceImpl implements   OverpaymentCalculationService{
+public class OverpaymentCalculationServiceImpl implements OverpaymentCalculationService{
 
     @Override
-    public Overpayment calculate(final BigDecimal rateNumber, final InputData inputData) {
+    public OverpaymentDetails calculate(final BigDecimal rateNumber, final InputData inputData) {
         BigDecimal overpaymentAmount = calculateOverpaymentAmount(rateNumber, inputData.overpaymentSchema()).orElse(BigDecimal.ZERO);
         BigDecimal overpaymentProvision = calculateOverpaymentProvision(rateNumber, overpaymentAmount, inputData);
-        return new Overpayment(overpaymentAmount, overpaymentProvision);
+        Overpayment overpaymentType = inputData.overpaymentReduceWay();
+        return new OverpaymentDetails(overpaymentAmount, overpaymentProvision, overpaymentType);
     }
 
     private Optional<BigDecimal> calculateOverpaymentAmount(final BigDecimal rateNumber, Map<Integer, BigDecimal> overpaymentSchema) {

@@ -6,6 +6,6 @@ public record RateAmounts(
         BigDecimal rateAmount,
         BigDecimal interestAmount,
         BigDecimal capitalAmount,
-        Overpayment overpayment
+        OverpaymentDetails overpaymentDetails
 ) {
 }

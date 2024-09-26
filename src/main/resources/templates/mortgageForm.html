@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Kalkulator Kredytu Hipotecznego</title>
+</head>
+<body>
+<h1>Kalkulator Kredytu Hipotecznego</h1>
+
+<form action="#" th:action="@{/mortgage}" th:object="${inputData}" method="post">
+    <label for="repaymentStartDate">Data rozpoczęcia spłaty:</label>
+    <input type="date" id="repaymentStartDate" th:field="*{repaymentStartDate}" required><br>
+
+    <label for="wiborPercent">WIBOR (%):</label>
+    <input type="number" step="0.01" id="wiborPercent" th:field="*{wiborPercent}" min="0" max="100" required><br>
+
+    <label for="amount">Kwota kredytu:</label>
+    <input type="number" step="0.01" id="amount" th:field="*{amount}" min="0" required><br>
+
+    <label for="monthsDuration">Okres kredytowania (miesiące):</label>
+    <input type="number" id="monthsDuration" th:field="*{monthsDuration}" min="1" required><br>
+
+    <label for="rateType">Typ oprocentowania:</label>
+    <select id="rateType" th:field="*{rateType}" required>
+        <option value="CONSTANT">Stałe</option>
+        <option value="DECREASING">Malejące</option>
+    </select><br>
+
+    <label for="marginPercent">Marża (%):</label>
+    <input type="number" step="0.01" id="marginPercent" th:field="*{marginPercent}" min="0" required><br>
+
+    <label for="overpaymentProvisionPercent">Prowizja za nadpłatę (%):</label>
+    <input type="number" step="0.01" id="overpaymentProvisionPercent" th:field="*{overpaymentProvisionPercent}" min="0" required><br>
+
+    <label for="overpaymentProvisionMonths">Miesiące prowizji za nadpłatę:</label>
+    <input type="number" id="overpaymentProvisionMonths" th:field="*{overpaymentProvisionMonths}" min="0" required><br>
+
+    <label for="overpaymentStartMonth">Miesiąc rozpoczęcia nadpłaty:</label>
+    <input type="number" id="overpaymentStartMonth" th:field="*{overpaymentStartMonth}" min="1" required><br>
+
+    <label for="overpaymentSchema">Schemat nadpłat:</label>
+    <input type="text" id="overpaymentSchema" th:field="*{overpaymentSchema}" placeholder="np. 2:10000,3:10000" required><br>
+
+    <label for="overpaymentReduceWay">Sposób redukcji nadpłaty:</label>
+    <select id="overpaymentReduceWay" th:field="*{overpaymentReduceWay}">
+        <option value="REDUCE_RATE">Zmniejszenie raty</option>
+        <option value="REDUCE_PERIOD">Skrócenie okresu</option>
+    </select><br>
+
+    <label for="mortgagePrintPayoffsSchedule">Drukować harmonogram spłat:</label>
+    <input type="checkbox" id="mortgagePrintPayoffsSchedule" th:field="*{mortgagePrintPayoffsSchedule}"><br>
+
+    <label for="mortgageRateNumberToPrint">Numer raty do wydruku:</label>
+    <input type="number" id="mortgageRateNumberToPrint" th:field="*{mortgageRateNumberToPrint}" min="1"><br>
+
+    <button type="submit">Oblicz</button>
+</form>
+
+<div th:if="${result}">
+    <h2>Wynik:</h2>
+    <p th:text="${result}"></p>
+</div>
+
+</body>
+</html>
+
