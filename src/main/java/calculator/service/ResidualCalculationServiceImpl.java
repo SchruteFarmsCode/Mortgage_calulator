@@ -4,21 +4,24 @@ import calculator.model.InputData;
 import calculator.model.MortgageResidual;
 import calculator.model.Rate;
 import calculator.model.RateAmounts;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-
+@Slf4j
 @Service
 public class ResidualCalculationServiceImpl implements ResidualCalculationService {
 
     @Override
     public MortgageResidual calculate(RateAmounts rateAmounts, InputData inputData) {
         if (BigDecimal.ZERO.equals(inputData.amount())) {
+            log.warn("Input amount is zero, returning zero residual.");
             return new MortgageResidual(BigDecimal.ZERO, BigDecimal.ZERO);
         } else {
             BigDecimal residualAmount = calculateResidualAmount(inputData.amount(), rateAmounts);
             BigDecimal residualDuration = calculateResidualDuration(inputData, residualAmount, inputData.monthsDuration(), rateAmounts);
+            log.info("Calculated residual: amount = {}, duration = {}", residualAmount, residualDuration);
             return new MortgageResidual(residualAmount, residualDuration);
         }
     }
@@ -29,10 +32,12 @@ public class ResidualCalculationServiceImpl implements ResidualCalculationServic
         BigDecimal previousResidualDuration = previousRate.mortgageResidual().residualDuration();
 
         if (BigDecimal.ZERO.equals(previousResidualAmount)) {
+            log.warn("Previous residual amount is zero, returning zero residual.");
             return new MortgageResidual(BigDecimal.ZERO, BigDecimal.ZERO);
         } else {
             BigDecimal residualAmount = calculateResidualAmount(previousResidualAmount, rateAmounts);
             BigDecimal residualDuration = calculateResidualDuration(inputData, residualAmount, previousResidualDuration, rateAmounts);
+            log.info("Calculated residual from previous rate: amount = {}, duration = {}", residualAmount, residualDuration);
             return new MortgageResidual(residualAmount, residualDuration);
         }
     }
@@ -74,9 +79,11 @@ public class ResidualCalculationServiceImpl implements ResidualCalculationServic
     }
 
     private BigDecimal calculateResidualAmount(final BigDecimal residualAmount, final RateAmounts rateAmounts) {
-        return residualAmount
+        BigDecimal newResidualAmount = residualAmount
                 .subtract(rateAmounts.capitalAmount())
                 .subtract(rateAmounts.overpaymentDetails().getAmount())
                 .max(BigDecimal.ZERO);
+        log.debug("Calculated new residual amount: {}", newResidualAmount);
+        return newResidualAmount;
     }
 }

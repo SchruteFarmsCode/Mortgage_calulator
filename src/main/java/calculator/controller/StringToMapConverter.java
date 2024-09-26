@@ -1,12 +1,13 @@
 package calculator.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.beans.PropertyEditorSupport;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-
+@Slf4j
 @Component
 public class StringToMapConverter extends PropertyEditorSupport {
     @Override
@@ -26,6 +27,7 @@ public class StringToMapConverter extends PropertyEditorSupport {
                         BigDecimal amount = new BigDecimal(parts[1]);
                         overpaymentSchema.put(month, amount);
                     } catch (NumberFormatException e) {
+                        log.error("Invalid format for entry: {}", entry, e);
                         throw new IllegalArgumentException("Błędny format danych w polu 'schemat nadpłat'");
                     }
                 }

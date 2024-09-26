@@ -25,10 +25,12 @@ public class InputDataRepository {
     public Optional<InputData> read() {
         var content = readFile();
         if(content.isEmpty()) {
+            log.warn("No content found in input data file.");
             return Optional.empty();
         }
 
         validate(content);
+        log.info("Input data read successfully. Validating...");
 
         var inputData = content.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().get(0).split(";")[1]));
@@ -77,6 +79,7 @@ public class InputDataRepository {
 
     private void validate(final Map<String, List<String>> content) {
         if (content.values().stream().anyMatch(values -> values.size() != 1)) {
+            log.error("Configuration mismatch in input data.");
             throw new IllegalArgumentException("Configuration mismatch");
         }
     }

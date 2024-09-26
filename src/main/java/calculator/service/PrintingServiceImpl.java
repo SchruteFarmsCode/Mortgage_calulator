@@ -66,6 +66,7 @@ public class PrintingServiceImpl implements PrintingService {
     @Override
     public void printSchedule(final List<Rate> rates, final InputData inputData) {
         if (!inputData.mortgagePrintPayoffsSchedule()) {
+            log.info("Mortgage payoffs schedule is not set to be printed.");
             return;
         }
 

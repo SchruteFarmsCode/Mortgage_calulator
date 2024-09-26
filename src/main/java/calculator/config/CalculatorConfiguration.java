@@ -4,6 +4,7 @@ import calculator.model.Rate;
 import calculator.model.RateAmounts;
 import calculator.model.Summary;
 import calculator.service.SummaryService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -11,13 +12,14 @@ import org.springframework.context.annotation.Configuration;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.Function;
-
+@Slf4j
 @Configuration
 @ComponentScan(basePackages = "calculator")
 public class CalculatorConfiguration {
     @Bean
     public static SummaryService create() {
         return rates -> {
+            log.info("Calculating summary for {} rates", rates.size());
             BigDecimal interestSum = calculate(rates, rate -> rate.rateAmounts().interestAmount());
             BigDecimal overpaymentProvisionSum = calculate(rates, rate -> rate.rateAmounts().overpaymentDetails().getProvisionAmount());
             BigDecimal totalLostSum = interestSum.add(overpaymentProvisionSum);

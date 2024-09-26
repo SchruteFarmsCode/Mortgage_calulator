@@ -2,13 +2,14 @@ package calculator.service;
 
 import calculator.model.*;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-
+@Slf4j
 @Service
 @AllArgsConstructor
 public class RateCalculationServiceImpl implements RateCalculationService {
@@ -39,7 +40,10 @@ public class RateCalculationServiceImpl implements RateCalculationService {
             previousRate = nextRate;
             rateList.add(nextRate);
 
+            log.info("Calculated rate {}: {}", i, nextRate);
+
             if (BigDecimal.ZERO.equals(nextRate.mortgageResidual().residualAmount().setScale(0, RoundingMode.HALF_UP))) {
+                log.info("Ending rate calculation as residual amount is zero for rate {}", i);
                 break;
             }
         }

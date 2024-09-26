@@ -4,12 +4,14 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.With;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Map;
 
+@Slf4j
 @With
 @Builder
 public record InputData(
@@ -30,23 +32,33 @@ public record InputData(
     private static final BigDecimal PERCENT = new BigDecimal("100");
 
     public BigDecimal wiborPercent() {
-        return wiborPercent.divide(PERCENT, 4, RoundingMode.HALF_UP);
+        BigDecimal result = wiborPercent.divide(PERCENT, 4, RoundingMode.HALF_UP);
+        log.debug("Converted wiborPercent: {} to {}", wiborPercent, result);
+        return result;
     }
 
     public BigDecimal marginPercent() {
-        return marginPercent.divide(PERCENT, 4, RoundingMode.HALF_UP);
+        BigDecimal result = marginPercent.divide(PERCENT, 4, RoundingMode.HALF_UP);
+        log.debug("Converted marginPercent: {} to {}", marginPercent, result);
+        return result;
     }
 
     public BigDecimal overpaymentProvisionPercent() {
-        return overpaymentProvisionPercent.divide(PERCENT, 4, RoundingMode.HALF_UP);
+        BigDecimal result = overpaymentProvisionPercent.divide(PERCENT, 4, RoundingMode.HALF_UP);
+        log.debug("Converted overpaymentProvisionPercent: {} to {}", overpaymentProvisionPercent, result);
+        return result;
     }
 
     public BigDecimal interestPercent() {
-        return marginPercent().add(wiborPercent());
+        BigDecimal result = marginPercent().add(wiborPercent());
+        log.debug("Calculated interestPercent: {}", result);
+        return result;
     }
 
     public BigDecimal interestToDisplay() {
-        return wiborPercent().add(marginPercent());
+        BigDecimal result = wiborPercent().add(marginPercent());
+        log.debug("Calculated interestToDisplay: {}", result);
+        return result;
     }
 }
 

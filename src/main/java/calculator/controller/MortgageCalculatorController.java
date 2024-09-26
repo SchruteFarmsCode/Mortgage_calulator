@@ -58,7 +58,7 @@ public class MortgageCalculatorController {
 
     @PostMapping()
     public String calculateMortgage(@Valid @ModelAttribute InputData inputData, Model model) {
-        log.info("InputData: {}", inputData);
+        log.info("Calculating mortgage with InputData: {}", inputData);
         log.info("OverpaymentSchema: {}", inputData.overpaymentSchema());
 
         List<Rate> rates = rateCalculationService.calculate(inputData);
